@@ -449,6 +449,8 @@ GameObject:
   - component: {fileID: 918250276}
   - component: {fileID: 918250275}
   - component: {fileID: 918250278}
+  - component: {fileID: 918250279}
+  - component: {fileID: 918250280}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -547,6 +549,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &918250279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918250273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859e2816b2c41d3439e4d560084ab84f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 5
+--- !u!114 &918250280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918250273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5f3944a62fd6c459c33b69b9715fca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpHeight: 5
 --- !u!1 &931559896
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1902403334}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
