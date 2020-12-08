@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour
     private float nextAmmo;
     private float reloadTime = 0.0f;
 
+    // Life vars
+    [SerializeField]
+    private int health = 5;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +69,9 @@ public class PlayerController : MonoBehaviour
 
         // Reloading
         reload();
+
+        // Game Over
+        gameOver();
     }
 
     void FixedUpdate()
@@ -145,5 +153,24 @@ public class PlayerController : MonoBehaviour
         {
             isReloading = false;
         }
+    }
+
+    private void gameOver()
+    {
+        if(health <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    // Getter and setters
+    public int getHealth()
+    {
+        return this.health;
+    }
+
+    public void setHealth(int newHealth)
+    {
+        this.health = newHealth;
     }
 }
