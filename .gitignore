@@ -69,3 +69,6 @@
 # Temporary auto-generated Android Assets
 /wave/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /wave/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+#DOCX
+*.docx
