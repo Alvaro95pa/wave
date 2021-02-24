@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
     private void chase()
     {
         transform.LookAt(player);
-        if(Vector3.Distance(transform.position, player.position) >= minDistance)
+        if (Vector3.Distance(transform.position, player.position) >= minDistance)
         {
             rb.MovePosition(rb.position + (transform.forward * movementSpeed * Time.deltaTime));
         }

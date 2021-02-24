@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     Transform[] spawnPositions;
     [SerializeField]
     private GameObject enemy;
@@ -17,12 +17,6 @@ public class LevelController : MonoBehaviour
     private float spawnTime = 0.0f;
     private float nextSpawn = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -32,7 +26,7 @@ public class LevelController : MonoBehaviour
     private void spawn()
     {
         spawnTime += Time.deltaTime;
-        if(spawnTime > nextSpawn && currentNumEnemies < maxEnemies)
+        if (spawnTime > nextSpawn && currentNumEnemies < maxEnemies)
         {
             nextSpawn = spawnTime + spawnDelay;
 
@@ -47,7 +41,7 @@ public class LevelController : MonoBehaviour
 
     private Transform getSpawnTransform()
     {
-        if(++spawnIndex >= spawnPositions.Length)
+        if (++spawnIndex >= spawnPositions.Length)
         {
             spawnIndex = 0;
         }
