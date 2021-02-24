@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     const int MAX_AMMO = 50;
-    
+
     // Components
     private Rigidbody rb;
     private Collider rbCollider;
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         reloadTime += Time.deltaTime;
 
-        if(isReloading && ammo < MAX_AMMO && reloadTime > nextAmmo)
+        if (isReloading && ammo < MAX_AMMO && reloadTime > nextAmmo)
         {
             nextAmmo = reloadTime + reloadVelocity;
             ammo += 1;
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
             nextAmmo -= reloadTime;
             reloadTime = 0.0f;
         }
-        else if(ammo == MAX_AMMO)
+        else if (ammo == MAX_AMMO)
         {
             isReloading = false;
         }
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
 
     private void gameOver()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             Destroy(this.gameObject);
         }
