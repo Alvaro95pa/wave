@@ -1,8 +1,8 @@
-name: Unity Builder
+name: Unity Tests
 
 on:
-  pull_request: { branches: [main] }
-  push: { branches: [main] }
+  pull_request: {}
+  push: {}
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -43,13 +43,6 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v0.10
-        with:
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: StandaloneWindows64
 
       # Output
       - uses: actions/upload-artifact@v1
