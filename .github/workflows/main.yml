@@ -11,6 +11,16 @@ jobs:
   build:
     name: Build Wave
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - wave
+        unityVersion:
+          - 2019.4.11f1
+        testMode:
+          - playmode
+          - editmode
     steps:
       # Checkout
       - name: Checkout repository
@@ -21,24 +31,28 @@ jobs:
       # Cache
       - uses: actions/cache@v1.1.0
         with:
-          path: wave/Library
-          key: Library
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
 
       # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v1.3
+        id: tests
         with:
-          unityVersion: 2019.4.11f1
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
 
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v0.10
         with:
-          unityVersion: 2019.4.11f1
+          unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: StandaloneWindows64
 
       # Output
       - uses: actions/upload-artifact@v1
         with:
-          name: Test
-          path: test
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}
