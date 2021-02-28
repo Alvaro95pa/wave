@@ -23,6 +23,7 @@ jobs:
           - StandaloneWindows # Build a Windows standalone.
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
+        buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
     steps:
       # Checkout
       - name: Checkout repository
@@ -48,9 +49,9 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-          buildName: ${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+          buildName: ${{ matrix.buildName }}
       # Output
       - uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          path: build/${{ matrix.buildName }}
