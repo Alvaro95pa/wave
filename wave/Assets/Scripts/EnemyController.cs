@@ -11,18 +11,18 @@ public class EnemyController : MonoBehaviour
 
     // Health vars
     [SerializeField]
-    private int maxImpacts;
+    private int maxImpacts = 5;
     private int currentImpacts = 0;
 
     // Movement vars
     [SerializeField]
-    private float movementSpeed;
+    private float movementSpeed = 0.0f;
     [SerializeField]
-    private float minDistance;
+    private float minDistance = 0.0f;
 
     // Damage vars
     [SerializeField]
-    private int damagePower;
+    private int damagePower = 1;
     [SerializeField]
     private float attackRatio = 0.5f;
     private float nextAttack = 0.5f;

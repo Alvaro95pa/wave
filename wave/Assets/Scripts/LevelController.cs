@@ -5,13 +5,13 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     [SerializeField]
-    Transform[] spawnPositions;
+    Transform[] spawnPositions = null;
     [SerializeField]
-    private GameObject enemy;
+    private GameObject enemy = null;
     [SerializeField]
-    private float spawnDelay;
+    private float spawnDelay = 0.0f;
     [SerializeField]
-    private int maxEnemies;
+    private int maxEnemies = 5;
     private int spawnIndex = 0;
     private int currentNumEnemies;
     private float spawnTime = 0.0f;

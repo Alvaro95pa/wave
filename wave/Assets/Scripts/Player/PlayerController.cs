@@ -10,36 +10,36 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Collider rbCollider;
     [SerializeField]
-    private Transform cam;
+    private Transform cam = null;
 
     // Movement and rotation vars
     [SerializeField]
-    private float speed;
+    private float speed = 1.0f;
     private Vector3 movement;
     private Vector3 direction;
 
     // Jump vars
     [SerializeField]
-    private float jumpForce;
+    private float jumpForce = 0.0f;
     [SerializeField]
-    private float maxDistance;
+    private float maxDistance = 0.0f;
     [SerializeField]
-    private LayerMask layerMask;
+    private LayerMask layerMask = 0;
 
     // Combat vars
     [SerializeField]
-    private GameObject shot;
+    private GameObject shot = null;
     [SerializeField]
-    private Transform shotSpawn;
+    private Transform shotSpawn = null;
     [SerializeField]
     private float fireRatio = 0.5f;
     private float nextFire = 0.5f;
     private float myTime = 0.0f;
     [SerializeField]
-    private int ammo;
+    private int ammo = 20;
     private bool isReloading = false;
     [SerializeField]
-    private float reloadVelocity;
+    private float reloadVelocity = 0.0f;
     private float nextAmmo;
     private float reloadTime = 0.0f;
 
@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0)
         {
             Destroy(this.gameObject);
+            Application.Quit();
         }
     }
 
