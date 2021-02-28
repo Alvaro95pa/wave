@@ -28,7 +28,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           lfs: true
 
       # Cache
@@ -42,7 +41,7 @@ jobs:
 
       # Build
       - name: Build project
-        uses: game-ci/unity-builder@v1.4
+        uses: game-ci/unity-builder@v0.10
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
