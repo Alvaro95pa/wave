@@ -42,12 +42,12 @@ jobs:
 
       # Build
       - name: Build project
-        uses: game-ci/unity-builder@v2.0-alpha-6
+        uses: game-ci/unity-builder@v1.4
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          versioning: Semantic
+          
       # Output
       - uses: actions/upload-artifact@v2
         with:
