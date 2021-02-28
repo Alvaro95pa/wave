@@ -40,15 +40,16 @@ jobs:
             Library-
 
       # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v2.0-alpha-1
+      - name: Unity - Builder
+        uses: game-ci/unity-builder@v1.5
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           
       # Output
       - uses: actions/upload-artifact@v2
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
