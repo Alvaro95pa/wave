@@ -2,7 +2,6 @@ name: Unity Build
 
 on:
   pull_request: { branches: [main] }
-  push: { branches: [main] }
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -53,3 +52,11 @@ jobs:
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+          
+      #Donwload asset
+      - name: Download windows
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          file: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
+          target: build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
+      
