@@ -9,6 +9,40 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
+  buildWindows:
+    name: Build for Windows
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - wave
+        unityVersion:
+          - 2019.4.11f1
+        targetPlatform:
+          - StandaloneWindows # Build a Windows standalone.
+        targetItchio:
+          - windows
+    steps:
+      # Checkout
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Build
+      - name: Unity Builder
+        uses: game-ci/unity-builder@v1.5
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          
+      # Output
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+
   windowsRelease:
     name: Upload Windows Release
     runs-on: ubuntu-latest
@@ -25,26 +59,10 @@ jobs:
           - windows
     steps:
       # Checkout
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          lfs: true
 
-      # Build
-      - name: Unity Builder
-        uses: game-ci/unity-builder@v1.5
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          
-      # Output
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-          
+      # Get artifact
       - name: Download Window Artifact
         uses: actions/download-artifact@v2
         with:
