@@ -46,6 +46,7 @@ jobs:
   windowsRelease:
     name: Upload Windows Release
     runs-on: ubuntu-latest
+    needs: buildWindows
     strategy:
       fail-fast: false
       matrix:
