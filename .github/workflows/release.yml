@@ -78,4 +78,4 @@ jobs:
           CHANNEL: ${{ matrix.targetItchio }}
           ITCH_GAME: wave
           ITCH_USER: HawkTheHuman
-          PACKAGE: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
+          PACKAGE: /home/runner/work/wave/wave/build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
