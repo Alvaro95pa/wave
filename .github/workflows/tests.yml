@@ -1,4 +1,4 @@
-name: UnityTests
+name: Unity Tests
 
 on:
   pull_request: {}
@@ -45,7 +45,8 @@ jobs:
           artifactsPath: ${{ matrix.testMode }}-artifacts
 
       # Output
-      - uses: actions/upload-artifact@v1
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
         with:
           name: Test results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}
