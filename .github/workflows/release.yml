@@ -1,9 +1,9 @@
 name: Upload Release to Itchio
 on:
-  push:
+  push: { branches: [main] }
     # Sequence of patterns matched against refs/tags
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    #tags:
+    #- 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -40,6 +40,11 @@ jobs:
           buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           
       # Output
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          
       - name: Download Window Artifact
         uses: actions/download-artifact@v2
         with:
