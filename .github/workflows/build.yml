@@ -1,7 +1,7 @@
 name: Unity Build
 
 on:
-  pull_request: { branches: [main] }
+  pull_request: { branches: [main, develop] }
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -21,10 +21,6 @@ jobs:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows # Build a Windows standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
-        targetItchio:
-          - osx
-          - windows
-          - linux
     steps:
       # Checkout
       - name: Checkout repository
@@ -51,17 +47,8 @@ jobs:
           buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           
       # Output
-      - uses: actions/upload-artifact@v2
+      - name: Output - ${{ matrix.targetPlatform }}
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-      
-      # Upload windows release
-      - name: Release ${{ matrix.targetPlatform }}
-        uses: josephbmanley/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: ${{ matrix.targetItchio }}
-          ITCH_GAME: wave
-          ITCH_USER: HawkTheHuman
-          PACKAGE: build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
