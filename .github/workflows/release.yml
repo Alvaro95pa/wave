@@ -41,7 +41,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
           retention-days: 5
 
   windowsRelease:
@@ -69,7 +69,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
           
       # Upload windows release
       - name: Release ${{ matrix.targetPlatform }}
