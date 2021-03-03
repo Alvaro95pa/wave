@@ -41,7 +41,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          retention-days: 5
+          #path: build/${{ matrix.targetPlatform }}
 
   windowsRelease:
     name: Upload Windows Release
@@ -68,7 +69,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          #path: build/${{ matrix.targetPlatform }}
           
       # Upload windows release
       - name: Release ${{ matrix.targetPlatform }}
@@ -78,4 +79,4 @@ jobs:
           CHANNEL: ${{ matrix.targetItchio }}
           ITCH_GAME: wave
           ITCH_USER: HawkTheHuman
-          PACKAGE: build/${{ matrix.targetPlatform }}/${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          PACKAGE: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}.zip
