@@ -1,21 +1,24 @@
-name: Unity Tests
+name: Unity-Tests
 
 on:
-  pull_request: {}
-  push: {}
+  push:
+    branches-ignore: [main]
+    # Remove the line above to run when pushing to master
+  pull_request:
+    branches: [main]
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
-    name: TestAllModes
+  test-all-modes:
+    name: Test all Unity modes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         projectPath:
-          - wave
+          - ${{ secrets.PROJECT_PATH }}
         unityVersion:
           - 2019.4.11f1
         testMode:
@@ -28,14 +31,8 @@ jobs:
         with:
           lfs: true
 
-      # Cache
-      - uses: actions/cache@v1.1.0
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-
       # Test
-      - name: Run tests
+      - name: Run ${{ matrix.testMode }} tests
         uses: game-ci/unity-test-runner@v1.3
         id: tests
         with:
@@ -45,7 +42,7 @@ jobs:
           artifactsPath: ${{ matrix.testMode }}-artifacts
 
       # Output
-      - name: Upload test results
+      - name: Upload ${{ matrix.testMode }} test results
         uses: actions/upload-artifact@v1
         with:
           name: Test results for ${{ matrix.testMode }}
