@@ -18,8 +18,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - wave
         unityVersion:
           - 2019.4.11f1
         targetPlatform:
@@ -37,14 +35,14 @@ jobs:
       - name: Unity Builder
         uses: game-ci/unity-builder@v1.5
         with:
-          projectPath: ${{ matrix.projectPath }} }}
+          projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          buildName: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           
       # Output
       - name: Output ${{ matrix.targetPlatform }}
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
