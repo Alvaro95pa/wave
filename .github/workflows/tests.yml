@@ -9,7 +9,7 @@ on:
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
+  PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
 jobs:
   test-all-modes:
     name: Test all Unity modes
@@ -17,8 +17,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - ${{ secrets.PROJECT_PATH }}
         unityVersion:
           - 2019.4.11f1
         testMode:
@@ -36,7 +34,7 @@ jobs:
         uses: game-ci/unity-test-runner@v1.3
         id: tests
         with:
-          projectPath: ${{ matrix.projectPath }}
+          projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
