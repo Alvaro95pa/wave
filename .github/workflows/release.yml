@@ -62,14 +62,14 @@ jobs:
         uses: actions/checkout@v2
 
       # Get artifact
-      - name: Download ${{ matrix.targetPlatform }} build artifact
+      - name: Download StandaloneWindows build artifact
         uses: actions/download-artifact@v2
         with:
           name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           
       # Upload release
-      - name: Release ${{ matrix.targetPlatform }}
+      - name: Release StandaloneWindows
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
@@ -97,14 +97,14 @@ jobs:
         uses: actions/checkout@v2
 
       # Get artifact
-      - name: Download ${{ matrix.targetPlatform }} build artifact
+      - name: Download StandaloneOSX build artifact
         uses: actions/download-artifact@v2
         with:
           name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           
       # Upload release
-      - name: Release ${{ matrix.targetPlatform }}
+      - name: Release StandaloneOSX
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
@@ -132,14 +132,14 @@ jobs:
         uses: actions/checkout@v2
 
       # Get artifact
-      - name: Download ${{ matrix.targetPlatform }} build artifact
+      - name: Download StandaloneLinux64 build artifact
         uses: actions/download-artifact@v2
         with:
           name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           
       # Upload release
-      - name: Release ${{ matrix.targetPlatform }}
+      - name: Release StandaloneLinux64
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
