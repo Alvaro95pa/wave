@@ -1,28 +1,27 @@
-name: Upload Release to Itchio
-on:
-  push: { branches: [main] }
-    # Sequence of patterns matched against refs/tags
-    #tags:
-    #- 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+name: Release-Itch.io
 
+# Run this workflow every time a new commit is pushed to main
+on:
+  push:
+    branches: [main]
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+  
 jobs:
-  buildWindows:
-    name: Build for Windows
+  unity-build:
+    name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - wave
         unityVersion:
           - 2019.4.11f1
         targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows # Build a Windows standalone.
-        targetItchio:
-          - windows
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
     steps:
       # Checkout
       - name: Checkout Repository
@@ -32,27 +31,25 @@ jobs:
       - name: Unity Builder
         uses: game-ci/unity-builder@v1.5
         with:
-          projectPath: ${{ matrix.projectPath }}
+          projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          buildName: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           
       # Output
-      - uses: actions/upload-artifact@v2
+      - name: Output ${{ matrix.targetPlatform }}
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-          retention-days: 5
 
-  windowsRelease:
-    name: Upload Windows Release
+  release-windows-itchio:
+    name: Upload Windows release to Itch.io
     runs-on: ubuntu-latest
-    needs: buildWindows
+    needs: unity-build
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - wave
         unityVersion:
           - 2019.4.11f1
         targetPlatform:
@@ -61,17 +58,87 @@ jobs:
           - windows
     steps:
       # Checkout
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       # Get artifact
-      - name: Download Window Artifact
+      - name: Download ${{ matrix.targetPlatform }} build artifact
         uses: actions/download-artifact@v2
         with:
-          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           
-      # Upload windows release
+      # Upload release
+      - name: Release ${{ matrix.targetPlatform }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: ${{ matrix.targetItchio }}
+          ITCH_GAME: wave
+          ITCH_USER: HawkTheHuman
+          PACKAGE: build/${{ matrix.targetPlatform }}
+          
+  release-osx-itchio:
+    name: Upload OSX release to Itch.io
+    runs-on: ubuntu-latest
+    needs: unity-build
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 2019.4.11f1
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+        targetItchio:
+          - osx
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Get artifact
+      - name: Download ${{ matrix.targetPlatform }} build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          
+      # Upload release
+      - name: Release ${{ matrix.targetPlatform }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: ${{ matrix.targetItchio }}
+          ITCH_GAME: wave
+          ITCH_USER: HawkTheHuman
+          PACKAGE: build/${{ matrix.targetPlatform }}
+          
+  release-linux-itchio:
+    name: Upload Linux release to Itch.io
+    runs-on: ubuntu-latest
+    needs: unity-build
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 2019.4.11f1
+        targetPlatform:
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
+        targetItchio:
+          - linux
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Get artifact
+      - name: Download ${{ matrix.targetPlatform }} build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          
+      # Upload release
       - name: Release ${{ matrix.targetPlatform }}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
