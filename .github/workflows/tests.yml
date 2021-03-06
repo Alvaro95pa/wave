@@ -1,21 +1,22 @@
-name: Unity Tests
+name: Unity-Tests
 
+# Run this workflow every time a new commit pushed to your repository except for main branch, who runs it on pull request
 on:
-  pull_request: {}
-  push: {}
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
+  PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
 jobs:
-  build:
-    name: TestAllModes
+  test-all-modes:
+    name: Test all Unity modes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - wave
         unityVersion:
           - 2019.4.11f1
         testMode:
@@ -28,24 +29,18 @@ jobs:
         with:
           lfs: true
 
-      # Cache
-      - uses: actions/cache@v1.1.0
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-
       # Test
-      - name: Run tests
+      - name: Run ${{ matrix.testMode }} tests
         uses: game-ci/unity-test-runner@v1.3
         id: tests
         with:
-          projectPath: ${{ matrix.projectPath }}
+          projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
 
       # Output
-      - name: Upload test results
+      - name: Upload ${{ matrix.testMode }} test results
         uses: actions/upload-artifact@v1
         with:
           name: Test results for ${{ matrix.testMode }}

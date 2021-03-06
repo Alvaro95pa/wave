@@ -1,20 +1,23 @@
-name: Unity Build
+name: Unity-Build
 
+# Run this workflow every time a new commit pushed to your repository except for main branch, who runs it on pull request
 on:
-  pull_request: { branches: [main, develop] }
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
+  PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+  
 jobs:
-  buildForAllSupportedPlatforms:
+  build-all-supported-platforms:
     name: Build for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - wave
         unityVersion:
           - 2019.4.11f1
         targetPlatform:
@@ -28,27 +31,18 @@ jobs:
         with:
           lfs: true
 
-      # Cache
-      - uses: actions/cache@v1.1.0
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-
-            Library-
-
       # Build
-      - name: Unity - Builder
+      - name: Unity Builder
         uses: game-ci/unity-builder@v1.5
         with:
-          projectPath: ${{ matrix.projectPath }}
+          projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildName: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          buildName: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           
       # Output
-      - name: Output - ${{ matrix.targetPlatform }}
+      - name: Output ${{ matrix.targetPlatform }}
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.projectPath }}_${{ matrix.targetPlatform }}
+          name: ${{ env.PROJECT_PATH }}_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
