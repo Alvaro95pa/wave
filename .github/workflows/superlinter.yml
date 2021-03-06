@@ -3,10 +3,10 @@ name: Super-Linter
 # Run this workflow every time a new commit pushed to your repository
 on:
   push:
-    branches-ignore: [master]
+    branches-ignore: [main]
     # Remove the line above to run when pushing to master
   pull_request:
-    branches: [master]
+    branches: [main]
     
 jobs:
   # Set the job key. The key is displayed as the job name
