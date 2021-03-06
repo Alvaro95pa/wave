@@ -1,10 +1,9 @@
 name: Super-Linter
 
-# Run this workflow every time a new commit pushed to your repository
+# Run this workflow every time a new commit pushed to your repository except for main branch, who runs it on pull request
 on:
   push:
     branches-ignore: [main]
-    # Remove the line above to run when pushing to master
   pull_request:
     branches: [main]
     
